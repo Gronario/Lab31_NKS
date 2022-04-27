@@ -28,16 +28,6 @@ public class Main {
         calcLab3(lab2Res, matrix, probs, 1, 1, 912, "alone");
     }
 
-    private static double lab2(List<List<Integer>> matrix, List<Double> probs) {
-        final DFS DFS = new DFS(matrix.size());
-        DFS.printResult(matrix);
-        final List<List<Integer>> schemas = getPropTable(DFS.getPaths());
-        final List<Double> probList = calcProbabilities(schemas, probs);
-        final double fres = getSum(probList);
-        System.out.printf("\nЙмовірність відмови P = %s\n", fres);
-        return fres;
-    }
-
     private static List<Double> getPsInput(final List<List<Integer>> matrix) throws FileNotFoundException {
         List<String> input = Arrays.asList(
                 new Scanner(
@@ -50,22 +40,14 @@ public class Main {
         }
         return res;
     }
-
-    private static List<List<Integer>> getMatrixInput() throws IOException {
-        List<List<Integer>> dynamicMatrix = Lists.newArrayList();
-        List<String> input = Arrays.asList(
-                new Scanner(
-                        new File(new File(Main.MATRIX).getPath()))
-                        .useDelimiter("\\Z").next().split("\\r?\\n")
-        );
-        input
-                .forEach(line -> dynamicMatrix.add(
-                        Arrays.stream(line.split(" "))
-                                .mapToInt(Integer::parseInt)
-                                .boxed()
-                                .collect(Collectors.toList())
-                ));
-        return dynamicMatrix;
+    private static double lab2(List<List<Integer>> matrix, List<Double> probs) {
+        final DFS DFS = new DFS(matrix.size());
+        DFS.printResult(matrix);
+        final List<List<Integer>> schemas = getPropTable(DFS.getPaths());
+        final List<Double> probList = calcProbabilities(schemas, probs);
+        final double fres = getSum(probList);
+        System.out.printf("\nЙмовірність відмови P = %s\n", fres);
+        return fres;
     }
 
     private static List<List<Integer>> getPropTable(final List<List<Integer>> paths) {
@@ -104,6 +86,29 @@ public class Main {
         return test.stream().distinct().collect(Collectors.toList());
     }
 
+    private static List<List<Integer>> getMatrixInput() throws IOException {
+        List<List<Integer>> dynamicMatrix = Lists.newArrayList();
+        List<String> input = Arrays.asList(
+                new Scanner(
+                        new File(new File(Main.MATRIX).getPath()))
+                        .useDelimiter("\\Z").next().split("\\r?\\n")
+        );
+        input
+                .forEach(line -> dynamicMatrix.add(
+                        Arrays.stream(line.split(" "))
+                                .mapToInt(Integer::parseInt)
+                                .boxed()
+                                .collect(Collectors.toList())
+                ));
+        return dynamicMatrix;
+    }
+    private static List<List<Integer>> getCombinations(final List<Integer> tmp, final int times) {
+        return Generator.combination(new HashSet<>(tmp))
+                .simple(times)
+                .stream()
+                .collect(Collectors.toList());
+    }
+
     private static List<Double> calcProbabilities(final List<List<Integer>> schemas,
                                                   final List<Double> inputPs
     ) {
@@ -122,13 +127,6 @@ public class Main {
             res.add(pVal);
         }
         return res;
-    }
-
-    private static List<List<Integer>> getCombinations(final List<Integer> tmp, final int times) {
-        return Generator.combination(new HashSet<>(tmp))
-                .simple(times)
-                .stream()
-                .collect(Collectors.toList());
     }
 
     private static Double calcLambda(final List<Double> probs, final int time) {
