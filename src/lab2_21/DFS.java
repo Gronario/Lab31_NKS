@@ -28,7 +28,7 @@ public class DFS {
         final boolean[] isVisited = new boolean[this.vertices];
         final ArrayList<Integer> pathList = new ArrayList<>();
         pathList.add(source);
-        System.out.printf("Всі шляхи від %s до %d:\n", source, dest);
+        System.out.printf("Всі шляхи від %s до %d: (початок та кінець схеми)\n", source, dest);
         print(source, dest, isVisited, pathList);
     }
     public void printResult(final List<List<Integer>> matrix) {

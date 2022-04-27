@@ -18,17 +18,18 @@ public class Main {
 
 
     public static void main(String[] args) throws IOException {
+        System.out.print("\nЛаб.робота2_Грона_Ю.О._ІО-83\n");
         List<List<Integer>> matrix = Matr_Input();
         List<Double> res = Inp_Get(matrix);
         final DFS Dfs_Path = new DFS(matrix.size());
         Dfs_Path.printResult(matrix);
         final List<List<Integer>> schemes = Table_of_probabilities(Dfs_Path.getPaths());
         final List<Double> probability_list = prob_calc(schemes, res);
-        System.out.println("Таблиця працездатних станів системи:");
+        System.out.println("\nТаблиця станів системи:");
         for (int i = 0; i < schemes.size(); i++) {
             System.out.println(schemes.get(i) + " = " + probability_list.get(i));
         }
-        System.out.printf("Ймовірність відмови P = %s\n", getSum(probability_list));
+        System.out.printf("\nЙмовірність відмови P = %s\n", getSum(probability_list));
         System.out.printf("Інтенсивність відмов Lambda = %s\n", Lamda_calc(probability_list, 10));
         System.out.printf("Ймовірність відмови T = %s\n", 1 / Lamda_calc(probability_list, 10));
     }
@@ -50,18 +51,7 @@ public class Main {
                                 .boxed()
                                 .collect(Collectors.toList())
                 ));
-        for (final List<Integer> matrix : Matr_Dynamic) {
-            for (final Integer val : matrix) {
-                if (Matr_Dynamic.size() != matrix.size()) {
-                    System.out.println("Невірно введені дані: не квадратна матриця");
-                    System.exit(0);
-                }
-                if (val != 0 && val != 1) {
-                    System.out.println("Невірно введені дані: значення в матриці не рівне 0 або 1");
-                    System.exit(0);
-                }
-            }
-        }
+
         return Matr_Dynamic;
     }
     private static List<Double> Inp_Get(final List<List<Integer>> matrix) throws FileNotFoundException {
@@ -73,16 +63,6 @@ public class Main {
         List<Double> res = new ArrayList<>();
         for (String value : input) {
             res.add(Double.parseDouble(value));
-        }
-        if (input.size() + 1 != matrix.size()) {
-            System.out.println("Невірно введені дані: кількість ймовірностей не підходить під матрицю");
-            System.exit(0);
-        }
-        for (final String s : input) {
-            if (Double.parseDouble(s) < 0 || Double.parseDouble(s) > 1) {
-                System.out.println("Невірно введені дані: ймовірність не в межах від 0 до 1");
-                System.exit(0);
-            }
         }
         return res;
     }
