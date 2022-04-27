@@ -161,4 +161,3 @@ public class Main {
         return numbers.stream().mapToInt(Number::intValue).max().orElse(0);
     }
 }
-
